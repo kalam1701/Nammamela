@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <EditText android:id="@+id/etCastName"
+        android:layout_width="match_parent" android:layout_height="52dp"
+        android:hint="Name *" android:inputType="textPersonName" android:textSize="16sp"
+        android:layout_marginBottom="10dp"/>
+
+    <EditText android:id="@+id/etCastRole"
+        android:layout_width="match_parent" android:layout_height="52dp"
+        android:hint="Role (Lead Actor / Comedian / Singer) *" android:textSize="16sp"
+        android:layout_marginBottom="10dp"/>
+
+    <EditText android:id="@+id/etCastBio"
+        android:layout_width="match_parent" android:layout_height="80dp"
+        android:hint="Bio (max 120 chars)" android:inputType="textMultiLine"
+        android:gravity="top" android:maxLength="120" android:textSize="16sp"
+        android:layout_marginBottom="10dp"/>
+
+    <EditText android:id="@+id/etCastPhoto"
+        android:layout_width="match_parent" android:layout_height="52dp"
+        android:hint="Photo URL (optional)" android:inputType="textUri" android:textSize="16sp"/>
+
+</LinearLayout>

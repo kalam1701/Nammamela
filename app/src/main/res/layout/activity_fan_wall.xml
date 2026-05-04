@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_dark">
+
+    <TextView
+        android:id="@+id/tvPostCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="0 applause messages"
+        android:textColor="@color/gold"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:paddingVertical="10dp"
+        android:background="@color/bg_header"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPosts"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp"
+        android:clipToPadding="false"/>
+
+    <TextView
+        android:id="@+id/tvEmptyWall"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="👏 Be the first to post applause!"
+        android:textColor="@color/text_secondary"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:visibility="gone"/>
+
+    <!-- Post input section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/card_bg"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/etNickname"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="Your name / nickname"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"
+            android:background="@drawable/bg_edit_text"
+            android:paddingHorizontal="12dp"
+            android:inputType="textPersonName"
+            android:maxLines="1"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/etMessage"
+            android:layout_width="match_parent"
+            android:layout_height="96dp"
+            android:hint="Share your applause (max 280 chars)..."
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"
+            android:background="@drawable/bg_edit_text"
+            android:paddingHorizontal="12dp"
+            android:paddingTop="10dp"
+            android:inputType="textMultiLine"
+            android:gravity="top"
+            android:maxLength="280"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"/>
+
+        <Button
+            android:id="@+id/btnAddPost"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="👏  Post Applause"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:backgroundTint="@color/gold"
+            android:textColor="@color/black"
+            android:layout_marginTop="10dp"/>
+    </LinearLayout>
+
+</LinearLayout>

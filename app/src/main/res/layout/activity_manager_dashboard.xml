@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_dark">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Section: Tonight's Play -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🎭 Tonight's Play"
+            android:textColor="@color/gold"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:fontFamily="serif"
+            android:paddingBottom="12dp"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/card_bg"
+            app:cardCornerRadius="10dp"
+            android:layout_marginBottom="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <EditText android:id="@+id/etPlayTitle"
+                    android:layout_width="match_parent" android:layout_height="52dp"
+                    android:hint="Play Title *" android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary" android:background="@drawable/bg_edit_text"
+                    android:paddingHorizontal="12dp" android:textSize="16sp" android:layout_marginBottom="10dp"/>
+
+                <EditText android:id="@+id/etPlayGenre"
+                    android:layout_width="match_parent" android:layout_height="52dp"
+                    android:hint="Genre (e.g. Drama, Comedy)" android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary" android:background="@drawable/bg_edit_text"
+                    android:paddingHorizontal="12dp" android:textSize="16sp" android:layout_marginBottom="10dp"/>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:layout_marginBottom="10dp">
+                    <EditText android:id="@+id/etPlayDuration"
+                        android:layout_width="0dp" android:layout_height="52dp" android:layout_weight="1"
+                        android:hint="Duration (mins)" android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_secondary" android:background="@drawable/bg_edit_text"
+                        android:paddingHorizontal="12dp" android:inputType="number" android:textSize="16sp"
+                        android:layout_marginEnd="8dp"/>
+                    <EditText android:id="@+id/etShowTime"
+                        android:layout_width="0dp" android:layout_height="52dp" android:layout_weight="1"
+                        android:hint="Show Time (7:00 PM)" android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_secondary" android:background="@drawable/bg_edit_text"
+                        android:paddingHorizontal="12dp" android:textSize="16sp"/>
+                </LinearLayout>
+
+                <EditText android:id="@+id/etSynopsis"
+                    android:layout_width="match_parent" android:layout_height="96dp"
+                    android:hint="Synopsis / Description" android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary" android:background="@drawable/bg_edit_text"
+                    android:paddingHorizontal="12dp" android:paddingTop="10dp"
+                    android:inputType="textMultiLine" android:gravity="top"
+                    android:textSize="16sp" android:layout_marginBottom="10dp"/>
+
+                <EditText android:id="@+id/etPosterUrl"
+                    android:layout_width="match_parent" android:layout_height="52dp"
+                    android:hint="Poster Image URL (optional)" android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary" android:background="@drawable/bg_edit_text"
+                    android:paddingHorizontal="12dp" android:inputType="textUri" android:textSize="16sp"
+                    android:layout_marginBottom="10dp"/>
+
+                <Button android:id="@+id/btnSavePlay"
+                    android:layout_width="match_parent" android:layout_height="52dp"
+                    android:text="💾  Save Play Details" android:textSize="16sp" android:textStyle="bold"
+                    android:backgroundTint="@color/accent_red"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Section: Cast -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:text="🎭 Cast Members" android:textColor="@color/gold"
+                android:textSize="20sp" android:textStyle="bold" android:fontFamily="serif"/>
+            <Button android:id="@+id/btnAddCast"
+                android:layout_width="wrap_content" android:layout_height="40dp"
+                android:text="+ Add" android:textSize="14sp"
+                android:backgroundTint="@color/gold" android:textColor="@color/black"
+                android:paddingHorizontal="16dp"/>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvManagerCast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:layout_marginBottom="20dp"/>
+
+        <!-- Section: Seat Management -->
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="🪑 Seat Management" android:textColor="@color/gold"
+            android:textSize="20sp" android:textStyle="bold" android:fontFamily="serif"
+            android:layout_marginBottom="12dp"/>
+
+        <Button android:id="@+id/btnResetSeats"
+            android:layout_width="match_parent" android:layout_height="52dp"
+            android:text="🔄  Reset All Seats (Next Show)" android:textSize="16sp" android:textStyle="bold"
+            android:backgroundTint="@color/card_bg" android:layout_marginBottom="20dp"/>
+
+        <!-- Section: Fan Wall Moderation -->
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="👏 Fan Wall Moderation" android:textColor="@color/gold"
+            android:textSize="20sp" android:textStyle="bold" android:fontFamily="serif"
+            android:layout_marginBottom="12dp"/>
+
+        <TextView android:id="@+id/tvNoFanPosts"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="No fan posts yet." android:textColor="@color/text_secondary"
+            android:textSize="14sp" android:gravity="center" android:paddingVertical="16dp"
+            android:visibility="gone"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvManagerPosts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:layout_marginBottom="20dp"/>
+
+        <!-- Section: Security -->
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="🔐 Security" android:textColor="@color/gold"
+            android:textSize="20sp" android:textStyle="bold" android:fontFamily="serif"
+            android:layout_marginBottom="12dp"/>
+
+        <Button android:id="@+id/btnChangePin"
+            android:layout_width="match_parent" android:layout_height="52dp"
+            android:text="🔑  Change Manager PIN" android:textSize="16sp" android:textStyle="bold"
+            android:backgroundTint="@color/card_bg" android:layout_marginBottom="32dp"/>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

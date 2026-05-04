@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_dark">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Header Banner -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_header"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="🎭 NAMMA MELA"
+                    android:textColor="@color/gold"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:fontFamily="serif"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="National Pride — Company Nataka"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:layout_marginTop="4dp"/>
+
+                <TextView
+                    android:id="@+id/tvDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp"
+                    android:gravity="center"
+                    android:layout_marginTop="6dp"/>
+            </LinearLayout>
+
+            <!-- No Show Message -->
+            <TextView
+                android:id="@+id/tvNoShow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="🎪 No show scheduled for tonight.\nCheck back later!"
+                android:textColor="@color/text_secondary"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:padding="40dp"
+                android:visibility="gone"/>
+
+            <!-- Play Info Card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardPlayInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                app:cardBackgroundColor="@color/card_bg"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="8dp"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/ivPoster"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_theatre_mask"
+                        android:contentDescription="Play poster"
+                        android:background="@color/bg_header"/>
+
+                    <TextView
+                        android:id="@+id/tvPlayTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tonight's Play"
+                        android:textColor="@color/gold"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:fontFamily="serif"
+                        android:layout_marginTop="12dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp">
+
+                        <TextView
+                            android:id="@+id/tvGenre"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Drama"
+                            android:textColor="@color/accent_red"
+                            android:textSize="14sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/tvDuration"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="⏱ 180 mins"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="14sp"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvShowTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="🕗 Show Time: 7:00 PM"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp"
+                        android:layout_marginTop="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tvSynopsis"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="14sp"
+                        android:layout_marginTop="8dp"
+                        android:maxLines="4"
+                        android:ellipsize="end"/>
+
+                    <!-- Seat Badge -->
+                    <TextView
+                        android:id="@+id/tvSeatBadge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_seat_badge"
+                        android:text="-- / -- seats left"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp"
+                        android:layout_marginTop="12dp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Action Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingBottom="80dp">
+
+                <Button
+                    android:id="@+id/btnBookSeats"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="🪑  Book My Seat"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/accent_red"
+                    android:layout_marginBottom="12dp"/>
+
+                <Button
+                    android:id="@+id/btnViewCast"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="🎭  Tonight's Cast"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/gold_dark"
+                    android:layout_marginBottom="12dp"/>
+
+                <Button
+                    android:id="@+id/btnFanWall"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="👏  Fan Wall"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/card_bg"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabManager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="24dp"
+        android:contentDescription="Manager Login"
+        app:srcCompat="@drawable/ic_settings"
+        app:backgroundTint="@color/gold"
+        app:tint="@color/black"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Namma Mela</string>
+    <string name="action_manager">Manager</string>
+    <string name="tonight_play">Tonight\'s Play</string>
+    <string name="book_seat">Book My Seat</string>
+    <string name="cast">Tonight\'s Cast</string>
+    <string name="fan_wall">Fan Wall</string>
+    <string name="manager_login">Manager Login</string>
+    <string name="manager_dashboard">Manager Dashboard</string>
+    <string name="seat_map">Seat Map</string>
+    <string name="default_pin_info">Default PIN: 1234</string>
+    <string name="no_show_tonight">No show scheduled for tonight.\nCheck back later!</string>
+</resources>

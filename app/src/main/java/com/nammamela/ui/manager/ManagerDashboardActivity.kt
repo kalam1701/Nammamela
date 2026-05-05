@@ -16,11 +16,46 @@ import com.nammamela.databinding.ActivityManagerDashboardBinding
 import com.nammamela.ui.fanwall.FanPostAdapter
 import com.nammamela.utils.PinManager
 import com.nammamela.utils.ViewModelFactory
+import androidx.activity.result.contract.ActivityResultContracts
+import com.bumptech.glide.Glide
+import android.util.Log
+import java.io.File
 
 class ManagerDashboardActivity : AppCompatActivity() {
     private lateinit var binding: ActivityManagerDashboardBinding
     private lateinit var viewModel: ManagerViewModel
     private lateinit var fanViewModel: com.nammamela.ui.fanwall.FanWallViewModel
+    private var currentPosterUrl: String = ""
+
+    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri != null) {
+            try {
+                // Copy image to app's internal storage
+                val fileName = "poster_${System.currentTimeMillis()}.jpg"
+                val posterDir = File(filesDir, "posters")
+                if (!posterDir.exists()) posterDir.mkdirs()
+                val destFile = File(posterDir, fileName)
+
+                contentResolver.openInputStream(uri)?.use { input ->
+                    destFile.outputStream().use { output ->
+                        input.copyTo(output)
+                    }
+                }
+
+                currentPosterUrl = destFile.absolutePath
+                Log.d("NammaMela", "Poster saved locally: $currentPosterUrl")
+
+                // Show preview
+                Glide.with(this).load(destFile).into(binding.ivPosterPreview)
+                binding.btnUploadPoster.text = "Change Poster"
+                Toast.makeText(this, "✅ Poster ready!", Toast.LENGTH_SHORT).show()
+
+            } catch (e: Exception) {
+                Log.e("NammaMela", "Failed to save poster", e)
+                Toast.makeText(this, "❌ Failed: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,21 +89,35 @@ class ManagerDashboardActivity : AppCompatActivity() {
                 binding.etPlayTitle.setText(play.title)
                 binding.etPlayGenre.setText(play.genre)
                 binding.etPlayDuration.setText(play.duration)
+                binding.etPlayDate.setText(play.date)
                 binding.etShowTime.setText(play.showTime)
+                binding.etPlayVenue.setText(play.venue)
                 binding.etSynopsis.setText(play.synopsis)
-                binding.etPosterUrl.setText(play.posterUrl)
+                currentPosterUrl = play.posterUrl
+                if (currentPosterUrl.isNotEmpty()) {
+                    val source: Any = if (currentPosterUrl.startsWith("/")) File(currentPosterUrl) else currentPosterUrl
+                    Glide.with(this).load(source).into(binding.ivPosterPreview)
+                    binding.btnUploadPoster.text = "Change Poster"
+                }
             }
+        }
+
+        binding.btnUploadPoster.setOnClickListener {
+            pickImageLauncher.launch("image/*")
         }
 
         binding.btnSavePlay.setOnClickListener {
             val title = binding.etPlayTitle.text.toString().trim()
             if (title.isEmpty()) { Toast.makeText(this, "Title required", Toast.LENGTH_SHORT).show(); return@setOnClickListener }
+            Log.d("NammaMela", "Saving play with posterUrl: $currentPosterUrl")
             val play = Play(
                 title = title, genre = binding.etPlayGenre.text.toString(),
                 duration = binding.etPlayDuration.text.toString(),
+                date = binding.etPlayDate.text.toString(),
                 showTime = binding.etShowTime.text.toString(),
+                venue = binding.etPlayVenue.text.toString(),
                 synopsis = binding.etSynopsis.text.toString(),
-                posterUrl = binding.etPosterUrl.text.toString()
+                posterUrl = currentPosterUrl
             )
             viewModel.savePlay(play)
             Toast.makeText(this, "✅ Play saved!", Toast.LENGTH_SHORT).show()
@@ -85,38 +134,99 @@ class ManagerDashboardActivity : AppCompatActivity() {
         binding.btnChangePin.setOnClickListener { showChangePinDialog() }
     }
 
+    private var castPhotoPath: String = ""
+    private var castPhotoPreview: android.widget.ImageView? = null
+
+    private val pickCastPhotoLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri != null) {
+            try {
+                val fileName = "cast_${System.currentTimeMillis()}.jpg"
+                val castDir = File(filesDir, "cast_photos")
+                if (!castDir.exists()) castDir.mkdirs()
+                val destFile = File(castDir, fileName)
+
+                contentResolver.openInputStream(uri)?.use { input ->
+                    destFile.outputStream().use { output ->
+                        input.copyTo(output)
+                    }
+                }
+
+                castPhotoPath = destFile.absolutePath
+                castPhotoPreview?.let {
+                    Glide.with(this).load(destFile).circleCrop().into(it)
+                }
+                Toast.makeText(this, "✅ Photo ready!", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                Toast.makeText(this, "❌ Failed: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun showAddCastDialog() {
+        castPhotoPath = ""
         val view = LayoutInflater.from(this).inflate(R.layout.dialog_cast, null)
-        AlertDialog.Builder(this, R.style.ThemeDialog).setTitle("Add Cast Member").setView(view)
-            .setPositiveButton("Add") { _, _ ->
-                val name = view.findViewById<EditText>(R.id.etCastName).text.toString().trim()
-                val role = view.findViewById<EditText>(R.id.etCastRole).text.toString().trim()
-                val bio = view.findViewById<EditText>(R.id.etCastBio).text.toString().trim()
-                val photo = view.findViewById<EditText>(R.id.etCastPhoto).text.toString().trim()
-                if (name.isNotEmpty()) viewModel.addCastMember(CastMember(name=name,role=role,bio=bio,photoUrl=photo))
-                else Toast.makeText(this,"Name required",Toast.LENGTH_SHORT).show()
-            }.setNegativeButton("Cancel",null).show()
+        val ivPreview = view.findViewById<android.widget.ImageView>(R.id.ivCastPhotoPreview)
+        val btnPick = view.findViewById<android.widget.Button>(R.id.btnPickCastPhoto)
+        val btnSave = view.findViewById<android.widget.Button>(R.id.btnCastSave)
+        val btnCancel = view.findViewById<android.widget.Button>(R.id.btnCastCancel)
+        castPhotoPreview = ivPreview
+
+        btnSave.text = "Add"
+        btnPick.setOnClickListener { pickCastPhotoLauncher.launch("image/*") }
+
+        val dialog = AlertDialog.Builder(this, R.style.ThemeDialog).setView(view).create()
+
+        btnSave.setOnClickListener {
+            val name = view.findViewById<EditText>(R.id.etCastName).text.toString().trim()
+            val role = view.findViewById<EditText>(R.id.etCastRole).text.toString().trim()
+            val bio = view.findViewById<EditText>(R.id.etCastBio).text.toString().trim()
+            if (name.isNotEmpty()) {
+                viewModel.addCastMember(CastMember(name=name,role=role,bio=bio,photoUrl=castPhotoPath))
+                dialog.dismiss()
+            } else Toast.makeText(this,"Name required",Toast.LENGTH_SHORT).show()
+        }
+        btnCancel.setOnClickListener { dialog.dismiss() }
+        dialog.show()
     }
 
     private fun showEditCastDialog(cast: CastMember) {
+        castPhotoPath = cast.photoUrl
         val view = LayoutInflater.from(this).inflate(R.layout.dialog_cast, null)
         val etName = view.findViewById<EditText>(R.id.etCastName)
         val etRole = view.findViewById<EditText>(R.id.etCastRole)
         val etBio = view.findViewById<EditText>(R.id.etCastBio)
-        val etPhoto = view.findViewById<EditText>(R.id.etCastPhoto)
+        val ivPreview = view.findViewById<android.widget.ImageView>(R.id.ivCastPhotoPreview)
+        val btnPick = view.findViewById<android.widget.Button>(R.id.btnPickCastPhoto)
+        val btnSave = view.findViewById<android.widget.Button>(R.id.btnCastSave)
+        val btnCancel = view.findViewById<android.widget.Button>(R.id.btnCastCancel)
+        castPhotoPreview = ivPreview
+
+        btnSave.text = "Save"
         etName.setText(cast.name)
         etRole.setText(cast.role)
         etBio.setText(cast.bio)
-        etPhoto.setText(cast.photoUrl)
-        AlertDialog.Builder(this, R.style.ThemeDialog).setTitle("Edit Cast Member").setView(view)
-            .setPositiveButton("Save") { _, _ ->
-                val name = etName.text.toString().trim()
-                val role = etRole.text.toString().trim()
-                val bio = etBio.text.toString().trim()
-                val photo = etPhoto.text.toString().trim()
-                if (name.isNotEmpty()) viewModel.updateCastMember(cast.copy(name=name,role=role,bio=bio,photoUrl=photo))
-                else Toast.makeText(this,"Name required",Toast.LENGTH_SHORT).show()
-            }.setNegativeButton("Cancel",null).show()
+
+        // Load existing photo if available
+        if (cast.photoUrl.isNotEmpty()) {
+            val source: Any = if (cast.photoUrl.startsWith("/")) File(cast.photoUrl) else cast.photoUrl
+            Glide.with(this).load(source).circleCrop().into(ivPreview)
+        }
+
+        btnPick.setOnClickListener { pickCastPhotoLauncher.launch("image/*") }
+
+        val dialog = AlertDialog.Builder(this, R.style.ThemeDialog).setView(view).create()
+
+        btnSave.setOnClickListener {
+            val name = etName.text.toString().trim()
+            val role = etRole.text.toString().trim()
+            val bio = etBio.text.toString().trim()
+            if (name.isNotEmpty()) {
+                viewModel.updateCastMember(cast.copy(name=name,role=role,bio=bio,photoUrl=castPhotoPath))
+                dialog.dismiss()
+            } else Toast.makeText(this,"Name required",Toast.LENGTH_SHORT).show()
+        }
+        btnCancel.setOnClickListener { dialog.dismiss() }
+        dialog.show()
     }
 
     private fun showChangePinDialog() {

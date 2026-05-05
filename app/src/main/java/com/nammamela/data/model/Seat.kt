@@ -1,17 +1,12 @@
 package com.nammamela.data.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
 enum class SeatStatus { AVAILABLE, RESERVED, SELECTED }
 
-@Entity(tableName = "seats")
 data class Seat(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    var id: String = "",
     val row: String = "",
     val seatNumber: Int = 0,
-    val status: SeatStatus = SeatStatus.AVAILABLE,
+    val status: String = SeatStatus.AVAILABLE.name,
     val bookedByName: String = "",
-    val seatLabel: String = "" // e.g. "A-5"
+    val seatLabel: String = ""
 )

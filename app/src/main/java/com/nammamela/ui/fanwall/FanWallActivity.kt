@@ -35,25 +35,22 @@ class FanWallActivity : AppCompatActivity() {
         viewModel.posts.observe(this) { adapter.submitList(it) }
         viewModel.postCount.observe(this) { binding.tvPostCount.text = "$it applause posts" }
 
-        binding.btnAddPost.setOnClickListener { showAddPostDialog() }
-    }
-
-    private fun showAddPostDialog() {
-        val view = LayoutInflater.from(this).inflate(R.layout.dialog_fan_post, null)
-        val etNick = view.findViewById<EditText>(R.id.etNickname)
-        val etMsg = view.findViewById<EditText>(R.id.etMessage)
-        AlertDialog.Builder(this, R.style.ThemeDialog)
-            .setTitle("👏 Post Applause")
-            .setView(view)
-            .setPositiveButton("Post") { _, _ ->
-                val nick = etNick.text.toString().trim()
-                val msg = etMsg.text.toString().trim()
-                if (nick.isNotEmpty() && msg.isNotEmpty()) {
-                    viewModel.addPost(nick, msg, "Tonight's Show")
-                    Toast.makeText(this, "Applause posted!", Toast.LENGTH_SHORT).show()
-                } else Toast.makeText(this, "Fill all fields", Toast.LENGTH_SHORT).show()
+        binding.btnAddPost.setOnClickListener {
+            val nick = binding.etNickname.text.toString().trim()
+            val msg = binding.etMessage.text.toString().trim()
+            if (nick.isNotEmpty() && msg.isNotEmpty()) {
+                viewModel.addPost(nick, msg, "Tonight's Show")
+                Toast.makeText(this, "Applause posted!", Toast.LENGTH_SHORT).show()
+                // Clear the input fields after posting
+                binding.etNickname.text.clear()
+                binding.etMessage.text.clear()
+                
+                // Scroll to bottom
+                binding.rvPosts.scrollToPosition(adapter.itemCount)
+            } else {
+                Toast.makeText(this, "Fill all fields", Toast.LENGTH_SHORT).show()
             }
-            .setNegativeButton("Cancel", null).show()
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean { onBackPressedDispatcher.onBackPressed(); return true }

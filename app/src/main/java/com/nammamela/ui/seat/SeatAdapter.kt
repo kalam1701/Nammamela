@@ -28,9 +28,10 @@ class SeatAdapter(private val onSeatClick: (Seat) -> Unit) :
         fun bind(seat: Seat) {
             binding.tvSeatLabel.text = seat.seatLabel
             val color = when (seat.status) {
-                SeatStatus.AVAILABLE -> R.color.seat_available
-                SeatStatus.RESERVED -> R.color.seat_reserved
-                SeatStatus.SELECTED -> R.color.seat_selected
+                SeatStatus.AVAILABLE.name -> R.color.seat_available
+                SeatStatus.RESERVED.name -> R.color.seat_reserved
+                SeatStatus.SELECTED.name -> R.color.seat_selected
+                else -> R.color.seat_available
             }
             binding.root.setCardBackgroundColor(ContextCompat.getColor(binding.root.context, color))
             binding.root.setOnClickListener { onSeatClick(seat) }

@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
-    app:cardBackgroundColor="@color/bg_dark"
-    app:cardCornerRadius="8dp">
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,10 +18,11 @@
 
         <ImageView
             android:id="@+id/ivPhoto"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_person"
+            android:background="@drawable/bg_avatar"
             android:contentDescription="Cast photo"/>
 
         <LinearLayout
@@ -44,7 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Role"
-                android:textColor="@color/accent_red"
+                android:textColor="@color/gold"
                 android:textSize="13sp"/>
         </LinearLayout>
 
@@ -54,9 +56,9 @@
             android:layout_height="36dp"
             android:text="Edit"
             android:textSize="12sp"
-            android:backgroundTint="@color/gold"
-            android:textColor="@color/black"
-            android:paddingHorizontal="10dp"
+            android:backgroundTint="@color/bg_mint"
+            android:textColor="@color/forest_green"
+            android:paddingHorizontal="12dp"
             android:layout_marginEnd="6dp"/>
 
         <Button
@@ -65,8 +67,9 @@
             android:layout_height="36dp"
             android:text="Del"
             android:textSize="12sp"
-            android:backgroundTint="@color/accent_red"
-            android:paddingHorizontal="10dp"/>
+            android:backgroundTint="@color/forest_green"
+            android:textColor="@color/white"
+            android:paddingHorizontal="12dp"/>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

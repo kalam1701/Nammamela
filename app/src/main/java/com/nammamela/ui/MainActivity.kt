@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.google.android.material.chip.Chip
 import com.nammamela.NammaMelaApp
 import com.nammamela.R
 import com.nammamela.databinding.ActivityMainBinding
@@ -37,7 +38,6 @@ class MainActivity : AppCompatActivity() {
         viewModel.initData()
         setupObservers()
         setupClickListeners()
-        updateDateDisplay()
     }
 
     private fun setupObservers() {
@@ -46,15 +46,36 @@ class MainActivity : AppCompatActivity() {
                 binding.tvNoShow.visibility = View.GONE
                 binding.cardPlayInfo.visibility = View.VISIBLE
                 binding.tvPlayTitle.text = play.title
-                binding.tvGenre.text = play.genre
+                // Dynamic venue
+                if (play.venue.isNotEmpty()) {
+                    binding.tvVenue.text = play.venue
+                }
+                // Dynamic genre chips
+                binding.chipGroupGenre.removeAllViews()
+                if (play.genre.isNotEmpty()) {
+                    play.genre.split(",").map { it.trim() }.filter { it.isNotEmpty() }.forEach { genre ->
+                        val chip = Chip(this)
+                        chip.text = genre
+                        chip.isClickable = false
+                        chip.setChipBackgroundColorResource(R.color.bg_mint)
+                        chip.setTextColor(resources.getColor(R.color.forest_green, theme))
+                        binding.chipGroupGenre.addView(chip)
+                    }
+                }
                 binding.tvDuration.text = "${play.duration} mins"
                 binding.tvShowTime.text = play.showTime
                 binding.tvSynopsis.text = play.synopsis
                 if (play.posterUrl.isNotEmpty()) {
+                    val posterSource: Any = if (play.posterUrl.startsWith("/")) {
+                        java.io.File(play.posterUrl)
+                    } else {
+                        play.posterUrl
+                    }
                     Glide.with(this)
-                        .load(play.posterUrl)
-                        .placeholder(R.drawable.ic_theatre_mask)
+                        .load(posterSource)
                         .into(binding.ivPoster)
+                } else {
+                    binding.ivPoster.setImageDrawable(null)
                 }
             } else {
                 binding.tvNoShow.visibility = View.VISIBLE
@@ -90,8 +111,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateDateDisplay() {
-        val sdf = SimpleDateFormat("EEE, dd MMM yyyy", Locale.getDefault())
-        binding.tvDate.text = sdf.format(Date())
-    }
 }

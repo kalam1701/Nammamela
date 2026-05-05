@@ -3,20 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/bg_dark">
+    android:background="@color/bg_mint">
 
     <!-- Stage indicator -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="🎭 S T A G E 🎭"
-        android:textColor="@color/gold"
-        android:textSize="16sp"
+        android:text="S T A G E"
+        android:textColor="@color/white"
+        android:textSize="14sp"
         android:textStyle="bold"
         android:gravity="center"
-        android:background="@color/bg_header"
-        android:paddingVertical="12dp"
-        android:letterSpacing="0.3"/>
+        android:background="@color/forest_green"
+        android:paddingVertical="14dp"
+        android:letterSpacing="0.4"/>
 
     <!-- Seat count -->
     <TextView
@@ -25,8 +25,9 @@
         android:layout_height="wrap_content"
         android:text="Loading seats..."
         android:textColor="@color/text_secondary"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:gravity="center"
+        android:background="@color/bg_light"
         android:paddingVertical="8dp"/>
 
     <!-- Legend -->
@@ -36,20 +37,21 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:paddingHorizontal="16dp"
-        android:paddingBottom="8dp">
+        android:paddingVertical="10dp"
+        android:background="@color/bg_light">
 
-        <View android:layout_width="16dp" android:layout_height="16dp"
+        <View android:layout_width="14dp" android:layout_height="14dp"
             android:background="@drawable/bg_seat_available"/>
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text=" Available " android:textColor="@color/text_secondary" android:textSize="12sp"/>
 
-        <View android:layout_width="16dp" android:layout_height="16dp"
-            android:background="@drawable/bg_seat_reserved" android:layout_marginStart="8dp"/>
+        <View android:layout_width="14dp" android:layout_height="14dp"
+            android:background="@drawable/bg_seat_reserved" android:layout_marginStart="12dp"/>
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text=" Reserved " android:textColor="@color/text_secondary" android:textSize="12sp"/>
 
-        <View android:layout_width="16dp" android:layout_height="16dp"
-            android:background="@drawable/bg_seat_selected" android:layout_marginStart="8dp"/>
+        <View android:layout_width="14dp" android:layout_height="14dp"
+            android:background="@drawable/bg_seat_selected" android:layout_marginStart="12dp"/>
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text=" Selected" android:textColor="@color/text_secondary" android:textSize="12sp"/>
     </LinearLayout>
@@ -59,7 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="8dp"
+        android:padding="12dp"
         android:clipToPadding="false"/>
 
 </LinearLayout>

@@ -5,25 +5,30 @@
     android:orientation="vertical"
     android:gravity="center"
     android:padding="32dp"
-    android:background="@color/bg_dark">
+    android:background="@color/bg_mint">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="🔐"
-        android:textSize="64sp"
-        android:gravity="center"/>
+    <LinearLayout
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:background="@drawable/bg_forest_circle"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🔐"
+            android:textSize="32sp"/>
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Manager Access"
-        android:textColor="@color/gold"
+        android:textColor="@color/forest_green"
         android:textSize="26sp"
         android:textStyle="bold"
         android:fontFamily="serif"
         android:gravity="center"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="20dp"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -33,7 +38,7 @@
         android:textSize="15sp"
         android:gravity="center"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="32dp"/>
+        android:layout_marginBottom="36dp"/>
 
     <EditText
         android:id="@+id/etPin"
@@ -55,10 +60,10 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:text="Unlock Dashboard"
-        android:textSize="17sp"
+        android:textSize="16sp"
         android:textStyle="bold"
-        android:backgroundTint="@color/gold"
-        android:textColor="@color/black"
+        android:backgroundTint="@color/forest_green"
+        android:textColor="@color/white"
         android:layout_marginTop="20dp"/>
 
     <TextView

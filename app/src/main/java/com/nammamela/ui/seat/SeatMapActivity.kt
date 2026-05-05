@@ -32,9 +32,9 @@ class SeatMapActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, factory)[SeatViewModel::class.java]
 
         adapter = SeatAdapter { seat ->
-            if (seat.status == SeatStatus.AVAILABLE) {
+            if (seat.status == SeatStatus.AVAILABLE.name) {
                 showBookingDialog(seat.id, seat.seatLabel)
-            } else if (seat.status == SeatStatus.RESERVED) {
+            } else if (seat.status == SeatStatus.RESERVED.name) {
                 Toast.makeText(this, "Seat ${seat.seatLabel} is already booked by ${seat.bookedByName}", Toast.LENGTH_SHORT).show()
             }
         }
@@ -59,24 +59,38 @@ class SeatMapActivity : AppCompatActivity() {
         }
     }
 
-    private fun showBookingDialog(seatId: Int, seatLabel: String) {
+    private fun showBookingDialog(seatId: String, seatLabel: String) {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_booking, null)
         val etName = dialogView.findViewById<EditText>(R.id.etFanName)
+        val btnConfirm = dialogView.findViewById<android.widget.Button>(R.id.btnConfirm)
+        val btnCancel = dialogView.findViewById<android.widget.Button>(R.id.btnCancel)
 
-        AlertDialog.Builder(this, R.style.ThemeDialog)
-            .setTitle("Book Seat $seatLabel")
+        // Set dynamic title text if needed or remove if the dialog title is enough
+        val tvTitle = dialogView.findViewById<android.widget.TextView>(R.id.tvTitle)
+        if (tvTitle != null) {
+            tvTitle.text = "Book Seat $seatLabel"
+        }
+
+        val dialog = AlertDialog.Builder(this, R.style.ThemeDialog)
             .setView(dialogView)
-            .setPositiveButton("Confirm") { _, _ ->
-                val name = etName.text.toString().trim()
-                if (name.isNotEmpty()) {
-                    viewModel.reserveSeat(seatId, name)
-                    Toast.makeText(this, "🎉 Seat $seatLabel booked for $name!", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "Please enter your name", Toast.LENGTH_SHORT).show()
-                }
+            .create()
+
+        btnConfirm.setOnClickListener {
+            val name = etName.text.toString().trim()
+            if (name.isNotEmpty()) {
+                viewModel.reserveSeat(seatId, name)
+                Toast.makeText(this, "🎉 Seat $seatLabel booked for $name!", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            } else {
+                Toast.makeText(this, "Please enter your name", Toast.LENGTH_SHORT).show()
             }
-            .setNegativeButton("Cancel", null)
-            .show()
+        }
+
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     override fun onSupportNavigateUp(): Boolean {

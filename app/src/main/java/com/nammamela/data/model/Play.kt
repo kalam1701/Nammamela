@@ -1,17 +1,14 @@
 package com.nammamela.data.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
-@Entity(tableName = "plays")
 data class Play(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    var id: String = "",
     val title: String = "",
     val genre: String = "",
     val duration: String = "",
     val synopsis: String = "",
     val posterUrl: String = "",
     val showTime: String = "",
+    val date: String = "",
+    val venue: String = "",
     val isActive: Boolean = true
 )

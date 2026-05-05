@@ -11,7 +11,7 @@ import com.nammamela.databinding.ItemFanPostBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
-class FanPostAdapter(private val isManager: Boolean, private val onDelete: (Int) -> Unit) :
+class FanPostAdapter(private val isManager: Boolean, private val onDelete: (String) -> Unit) :
     ListAdapter<FanPost, FanPostAdapter.PostViewHolder>(DIFF) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =

@@ -10,7 +10,7 @@ class SeatViewModel(private val repository: NammaMelaRepository) : ViewModel() {
     val availableCount = repository.availableCount
     val totalCount = repository.totalCount
 
-    fun reserveSeat(seatId: Int, name: String) {
+    fun reserveSeat(seatId: String, name: String) {
         viewModelScope.launch {
             repository.reserveSeat(seatId, name)
         }

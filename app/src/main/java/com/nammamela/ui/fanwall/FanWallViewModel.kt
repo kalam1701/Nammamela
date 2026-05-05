@@ -23,7 +23,7 @@ class FanWallViewModel(private val repository: NammaMelaRepository) : ViewModel(
         }
     }
 
-    fun deletePost(id: Int) {
+    fun deletePost(id: String) {
         viewModelScope.launch {
             repository.deletePost(id)
         }

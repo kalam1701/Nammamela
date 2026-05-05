@@ -31,8 +31,13 @@ class CastAdapter : ListAdapter<CastMember, CastAdapter.CastViewHolder>(DIFF_CAL
             binding.tvCastBio.text = cast.bio
 
             if (cast.photoUrl.isNotEmpty()) {
+                val source: Any = if (cast.photoUrl.startsWith("/")) {
+                    java.io.File(cast.photoUrl)
+                } else {
+                    cast.photoUrl
+                }
                 Glide.with(binding.root.context)
-                    .load(cast.photoUrl)
+                    .load(source)
                     .circleCrop()
                     .placeholder(R.drawable.ic_person)
                     .into(binding.ivCastPhoto)

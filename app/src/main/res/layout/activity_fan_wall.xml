@@ -3,26 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/bg_dark">
+    android:background="@color/bg_mint">
 
     <TextView
         android:id="@+id/tvPostCount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="0 applause messages"
-        android:textColor="@color/gold"
+        android:textColor="@color/forest_green"
         android:textSize="14sp"
         android:textStyle="bold"
         android:gravity="center"
-        android:paddingVertical="10dp"
-        android:background="@color/bg_header"/>
+        android:paddingVertical="12dp"
+        android:background="@color/bg_light"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvPosts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="8dp"
+        android:padding="12dp"
         android:clipToPadding="false"/>
 
     <TextView
@@ -41,8 +41,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@color/card_bg"
-        android:padding="16dp">
+        android:background="@color/white"
+        android:padding="16dp"
+        android:elevation="8dp">
 
         <EditText
             android:id="@+id/etNickname"
@@ -55,12 +56,12 @@
             android:paddingHorizontal="12dp"
             android:inputType="textPersonName"
             android:maxLines="1"
-            android:textSize="16sp"/>
+            android:textSize="15sp"/>
 
         <EditText
             android:id="@+id/etMessage"
             android:layout_width="match_parent"
-            android:layout_height="96dp"
+            android:layout_height="88dp"
             android:hint="Share your applause (max 280 chars)..."
             android:textColor="@color/text_primary"
             android:textColorHint="@color/text_secondary"
@@ -70,18 +71,18 @@
             android:inputType="textMultiLine"
             android:gravity="top"
             android:maxLength="280"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:layout_marginTop="10dp"/>
 
         <Button
             android:id="@+id/btnAddPost"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:text="👏  Post Applause"
-            android:textSize="16sp"
+            android:text="Post Applause"
+            android:textSize="15sp"
             android:textStyle="bold"
-            android:backgroundTint="@color/gold"
-            android:textColor="@color/black"
+            android:backgroundTint="@color/forest_green"
+            android:textColor="@color/white"
             android:layout_marginTop="10dp"/>
     </LinearLayout>
 

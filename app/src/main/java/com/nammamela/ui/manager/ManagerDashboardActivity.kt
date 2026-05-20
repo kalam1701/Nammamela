@@ -234,24 +234,36 @@ class ManagerDashboardActivity : AppCompatActivity() {
         val etCurrent = view.findViewById<EditText>(R.id.etCurrentPin)
         val etNew = view.findViewById<EditText>(R.id.etNewPin)
         val etConfirm = view.findViewById<EditText>(R.id.etConfirmPin)
-        AlertDialog.Builder(this, R.style.ThemeDialog).setTitle("Change Manager PIN").setView(view)
-            .setPositiveButton("Change") { _, _ ->
-                val current = etCurrent.text.toString()
-                val newPin = etNew.text.toString()
-                val confirm = etConfirm.text.toString()
-                when {
-                    !PinManager.verifyPin(this, current) ->
-                        Toast.makeText(this, "❌ Current PIN is incorrect", Toast.LENGTH_SHORT).show()
-                    newPin.length < 4 ->
-                        Toast.makeText(this, "New PIN must be at least 4 digits", Toast.LENGTH_SHORT).show()
-                    newPin != confirm ->
-                        Toast.makeText(this, "New PINs don't match", Toast.LENGTH_SHORT).show()
-                    else -> {
-                        PinManager.setPin(this, newPin)
-                        Toast.makeText(this, "✅ PIN changed successfully!", Toast.LENGTH_SHORT).show()
-                    }
+        val btnCancel = view.findViewById<android.widget.Button>(R.id.btnCancel)
+        val btnChange = view.findViewById<android.widget.Button>(R.id.btnChange)
+
+        val dialog = AlertDialog.Builder(this, R.style.ThemeDialog)
+            .setTitle("Change Manager PIN")
+            .setView(view)
+            .create()
+
+        btnCancel.setOnClickListener { dialog.dismiss() }
+
+        btnChange.setOnClickListener {
+            val current = etCurrent.text.toString()
+            val newPin = etNew.text.toString()
+            val confirm = etConfirm.text.toString()
+            when {
+                !PinManager.verifyPin(this, current) ->
+                    Toast.makeText(this, "❌ Current PIN is incorrect", Toast.LENGTH_SHORT).show()
+                newPin.length < 4 ->
+                    Toast.makeText(this, "New PIN must be at least 4 digits", Toast.LENGTH_SHORT).show()
+                newPin != confirm ->
+                    Toast.makeText(this, "New PINs don't match", Toast.LENGTH_SHORT).show()
+                else -> {
+                    PinManager.setPin(this, newPin)
+                    Toast.makeText(this, "✅ PIN changed successfully!", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
                 }
-            }.setNegativeButton("Cancel",null).show()
+            }
+        }
+
+        dialog.show()
     }
 
     override fun onSupportNavigateUp(): Boolean { onBackPressedDispatcher.onBackPressed(); return true }

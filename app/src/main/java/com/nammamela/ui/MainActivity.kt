@@ -66,14 +66,7 @@ class MainActivity : AppCompatActivity() {
                 binding.tvShowTime.text = play.showTime
                 binding.tvSynopsis.text = play.synopsis
                 if (play.posterUrl.isNotEmpty()) {
-                    val posterSource: Any = if (play.posterUrl.startsWith("/")) {
-                        java.io.File(play.posterUrl)
-                    } else {
-                        play.posterUrl
-                    }
-                    Glide.with(this)
-                        .load(posterSource)
-                        .into(binding.ivPoster)
+                    com.nammamela.utils.ImageUtils.loadImage(this, play.posterUrl, binding.ivPoster)
                 } else {
                     binding.ivPoster.setImageDrawable(null)
                 }

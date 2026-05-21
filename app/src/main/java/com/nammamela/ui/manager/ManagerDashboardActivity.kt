@@ -14,12 +14,12 @@ import com.nammamela.data.model.CastMember
 import com.nammamela.data.model.Play
 import com.nammamela.databinding.ActivityManagerDashboardBinding
 import com.nammamela.ui.fanwall.FanPostAdapter
+import com.nammamela.utils.ImageUtils
 import com.nammamela.utils.PinManager
 import com.nammamela.utils.ViewModelFactory
 import androidx.activity.result.contract.ActivityResultContracts
 import com.bumptech.glide.Glide
 import android.util.Log
-import java.io.File
 
 class ManagerDashboardActivity : AppCompatActivity() {
     private lateinit var binding: ActivityManagerDashboardBinding
@@ -29,31 +29,27 @@ class ManagerDashboardActivity : AppCompatActivity() {
 
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
-            try {
-                // Copy image to app's internal storage
-                val fileName = "poster_${System.currentTimeMillis()}.jpg"
-                val posterDir = File(filesDir, "posters")
-                if (!posterDir.exists()) posterDir.mkdirs()
-                val destFile = File(posterDir, fileName)
+            // Show preview immediately from local URI
+            Glide.with(this).load(uri).into(binding.ivPosterPreview)
+            binding.btnUploadPoster.text = "⏳ Processing..."
+            binding.btnUploadPoster.isEnabled = false
 
-                contentResolver.openInputStream(uri)?.use { input ->
-                    destFile.outputStream().use { output ->
-                        input.copyTo(output)
+            // Convert to Base64 in background thread
+            Thread {
+                val base64 = ImageUtils.uriToBase64(this, uri)
+                runOnUiThread {
+                    if (base64 != null) {
+                        currentPosterUrl = base64
+                        Log.d("NammaMela", "Poster converted to Base64 (${base64.length} chars)")
+                        binding.btnUploadPoster.text = "Change Poster"
+                        Toast.makeText(this, "✅ Poster ready!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        binding.btnUploadPoster.text = "Upload Poster"
+                        Toast.makeText(this, "❌ Failed to process image", Toast.LENGTH_LONG).show()
                     }
+                    binding.btnUploadPoster.isEnabled = true
                 }
-
-                currentPosterUrl = destFile.absolutePath
-                Log.d("NammaMela", "Poster saved locally: $currentPosterUrl")
-
-                // Show preview
-                Glide.with(this).load(destFile).into(binding.ivPosterPreview)
-                binding.btnUploadPoster.text = "Change Poster"
-                Toast.makeText(this, "✅ Poster ready!", Toast.LENGTH_SHORT).show()
-
-            } catch (e: Exception) {
-                Log.e("NammaMela", "Failed to save poster", e)
-                Toast.makeText(this, "❌ Failed: ${e.message}", Toast.LENGTH_LONG).show()
-            }
+            }.start()
         }
     }
 
@@ -95,8 +91,7 @@ class ManagerDashboardActivity : AppCompatActivity() {
                 binding.etSynopsis.setText(play.synopsis)
                 currentPosterUrl = play.posterUrl
                 if (currentPosterUrl.isNotEmpty()) {
-                    val source: Any = if (currentPosterUrl.startsWith("/")) File(currentPosterUrl) else currentPosterUrl
-                    Glide.with(this).load(source).into(binding.ivPosterPreview)
+                    ImageUtils.loadImage(this, currentPosterUrl, binding.ivPosterPreview)
                     binding.btnUploadPoster.text = "Change Poster"
                 }
             }
@@ -109,7 +104,7 @@ class ManagerDashboardActivity : AppCompatActivity() {
         binding.btnSavePlay.setOnClickListener {
             val title = binding.etPlayTitle.text.toString().trim()
             if (title.isEmpty()) { Toast.makeText(this, "Title required", Toast.LENGTH_SHORT).show(); return@setOnClickListener }
-            Log.d("NammaMela", "Saving play with posterUrl: $currentPosterUrl")
+            Log.d("NammaMela", "Saving play with posterUrl length: ${currentPosterUrl.length}")
             val play = Play(
                 title = title, genre = binding.etPlayGenre.text.toString(),
                 duration = binding.etPlayDuration.text.toString(),
@@ -139,26 +134,25 @@ class ManagerDashboardActivity : AppCompatActivity() {
 
     private val pickCastPhotoLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
-            try {
-                val fileName = "cast_${System.currentTimeMillis()}.jpg"
-                val castDir = File(filesDir, "cast_photos")
-                if (!castDir.exists()) castDir.mkdirs()
-                val destFile = File(castDir, fileName)
+            // Show preview immediately from local URI
+            castPhotoPreview?.let {
+                Glide.with(this).load(uri).circleCrop().into(it)
+            }
+            Toast.makeText(this, "⏳ Processing photo...", Toast.LENGTH_SHORT).show()
 
-                contentResolver.openInputStream(uri)?.use { input ->
-                    destFile.outputStream().use { output ->
-                        input.copyTo(output)
+            // Convert to Base64 in background thread
+            Thread {
+                val base64 = ImageUtils.uriToBase64(this, uri)
+                runOnUiThread {
+                    if (base64 != null) {
+                        castPhotoPath = base64
+                        Log.d("NammaMela", "Cast photo converted to Base64 (${base64.length} chars)")
+                        Toast.makeText(this, "✅ Photo ready!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this, "❌ Failed to process photo", Toast.LENGTH_SHORT).show()
                     }
                 }
-
-                castPhotoPath = destFile.absolutePath
-                castPhotoPreview?.let {
-                    Glide.with(this).load(destFile).circleCrop().into(it)
-                }
-                Toast.makeText(this, "✅ Photo ready!", Toast.LENGTH_SHORT).show()
-            } catch (e: Exception) {
-                Toast.makeText(this, "❌ Failed: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
+            }.start()
         }
     }
 
@@ -208,8 +202,7 @@ class ManagerDashboardActivity : AppCompatActivity() {
 
         // Load existing photo if available
         if (cast.photoUrl.isNotEmpty()) {
-            val source: Any = if (cast.photoUrl.startsWith("/")) File(cast.photoUrl) else cast.photoUrl
-            Glide.with(this).load(source).circleCrop().into(ivPreview)
+            ImageUtils.loadImage(this, cast.photoUrl, ivPreview, circleCrop = true)
         }
 
         btnPick.setOnClickListener { pickCastPhotoLauncher.launch("image/*") }

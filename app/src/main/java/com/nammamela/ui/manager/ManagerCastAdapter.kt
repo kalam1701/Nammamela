@@ -28,8 +28,9 @@ class ManagerCastAdapter(
             binding.tvName.text = cast.name
             binding.tvRole.text = cast.role
             if (cast.photoUrl.isNotEmpty()) {
-                Glide.with(binding.root.context).load(cast.photoUrl)
-                    .circleCrop().placeholder(R.drawable.ic_person).into(binding.ivPhoto)
+                com.nammamela.utils.ImageUtils.loadImage(
+                    binding.root.context, cast.photoUrl, binding.ivPhoto, circleCrop = true
+                )
             } else {
                 binding.ivPhoto.setImageResource(R.drawable.ic_person)
             }
